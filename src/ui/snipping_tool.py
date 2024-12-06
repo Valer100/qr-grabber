@@ -178,6 +178,20 @@ class TkinterSnippingTool(SnippingToolBase):
             self.snip_surface.coords(
                 self.rect, self.start_x, self.start_y, self.current_x, self.current_y
             )
+
+            # Calculate the coordinates relative to the screen
+            x1: int = int(self.start_x)
+            y1: int = int(self.start_y)
+            x2: int = int(self.snip_surface.canvasx(event.x))
+            y2: int = int(self.snip_surface.canvasy(event.y))
+
+            width: int = abs(x2 - x1)
+            height: int = abs(y2 - y1)
+
+            if width < 40 or height < 40:
+                self.snip_surface.itemconfigure(self.rect, outline="yellow")
+            else:
+                self.snip_surface.itemconfigure(self.rect, outline="white")
         except Exception as e:
             logger.exception(f"Error during snip drag: {e}")
 

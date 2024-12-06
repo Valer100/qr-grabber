@@ -19,12 +19,13 @@ except FileNotFoundError:
         "Import Error",
         "Failed to import pyzbar. This may be because Microsoft Visual C++ 2013 Redistributable is not installed on your system.\n\n"
         "Would you like to download and install it manually?",
-
-        type="yesno"
+        type="yesno",
     )
 
     if download_cpp_redistributable == "yes":
-        webbrowser.open("https://www.microsoft.com/en-gb/download/details.aspx?id=40784")
+        webbrowser.open(
+            "https://www.microsoft.com/en-gb/download/details.aspx?id=40784"
+        )
 
     sys.exit(1)
 

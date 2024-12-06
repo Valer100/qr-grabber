@@ -3,23 +3,29 @@ try:
     from pyzbar.pyzbar_error import PyZbarError  # Import specific exception
 except FileNotFoundError:
     import sys
+    import webbrowser
     from loguru import logger
     from tkinter import messagebox
 
     logger.error(
-        "Failed to import pyzbar. This may be due to a missing vcredist_x64.exe file."
+        "Failed to import pyzbar. Failed to import pyzbar. This may be because Microsoft Visual C++ 2013 Redistributable is not installed on your system."
     )
     logger.error(
         "Please download and install the Visual C++ Redistributable for Visual Studio 2013 from the following link:"
     )
     logger.error("https://www.microsoft.com/en-gb/download/details.aspx?id=40784")
 
-    messagebox.showerror(
+    download_cpp_redistributable = messagebox.showerror(
         "Import Error",
-        "Failed to import pyzbar. This may be due to a missing vcredist_x64.exe file.\n\n"
-        "Please download and install the Visual C++ Redistributable for Visual Studio 2013 from the following link:\n"
-        "https://www.microsoft.com/en-gb/download/details.aspx?id=40784",
+        "Failed to import pyzbar. This may be because Microsoft Visual C++ 2013 Redistributable is not installed on your system.\n\n"
+        "Would you like to download and install it manually?",
+
+        type="yesno"
     )
+
+    if download_cpp_redistributable == "yes":
+        webbrowser.open("https://www.microsoft.com/en-gb/download/details.aspx?id=40784")
+
     sys.exit(1)
 
 from PIL import Image

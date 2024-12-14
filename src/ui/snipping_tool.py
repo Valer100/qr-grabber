@@ -185,10 +185,12 @@ class TkinterSnippingTool(SnippingToolBase):
             x2: int = int(self.snip_surface.canvasx(event.x))
             y2: int = int(self.snip_surface.canvasy(event.y))
 
-            width: int = abs(x2 - x1)
-            height: int = abs(y2 - y1)
+            self.left: int = min(x1, x2)
+            self.top: int = min(y1, y2)
+            self.width: int = abs(x2 - x1)
+            self.height: int = abs(y2 - y1)
 
-            if width < 40 or height < 40:
+            if self.width < 40 or self.height < 40:
                 self.snip_surface.itemconfigure(self.rect, outline="yellow")
             else:
                 self.snip_surface.itemconfigure(self.rect, outline="white")
@@ -198,23 +200,14 @@ class TkinterSnippingTool(SnippingToolBase):
     def on_button_release(self, event: tk.Event) -> None:
         """Process screenshot after selection"""
         try:
-            # Calculate the coordinates relative to the screen
-            x1: int = int(self.start_x)
-            y1: int = int(self.start_y)
-            x2: int = int(self.snip_surface.canvasx(event.x))
-            y2: int = int(self.snip_surface.canvasy(event.y))
+            logger.info(
+                f"Screenshot selection: {self.left},{self.top} {self.width}x{self.height}"
+            )
 
-            left: int = min(x1, x2)
-            top: int = min(y1, y2)
-            width: int = abs(x2 - x1)
-            height: int = abs(y2 - y1)
-
-            logger.info(f"Screenshot selection: {left},{top} {width}x{height}")
-
-            if not (width < 40 or height < 40):
+            if not (self.width < 40 or self.height < 40):
                 screenshot: Optional[Image.Image] = (
                     self.screenshot_service.take_bounded_screenshot(
-                        left, top, width, height
+                        self.left, self.top, self.width, self.height
                     )
                 )
                 # if screenshot:

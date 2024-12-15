@@ -36,6 +36,12 @@ class TkinterSnippingTool(SnippingToolBase):
     alpha_increment = 0.01
     alpha_cycles = int(max_alpha / alpha_increment)
 
+    # Selection
+    left: int = 0
+    top: int = 0
+    width: int = 0
+    height: int = 0
+
     def __init__(
         self,
         qr_processor: QRCodeProcessor,
